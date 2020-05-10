@@ -8,6 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import Category from './Category';
+import ColumnNumericTransformer from '../utils/ColumnNumericTransformer';
 
 @Entity('transactions')
 class Transaction {
@@ -20,7 +21,11 @@ class Transaction {
   @Column()
   type: 'income' | 'outcome';
 
-  @Column('decimal', { precision: 10, scale: 2 })
+  @Column('decimal', {
+    precision: 10,
+    scale: 2,
+    transformer: new ColumnNumericTransformer(),
+  })
   value: number;
 
   @Column()
