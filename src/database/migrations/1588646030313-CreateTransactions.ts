@@ -24,6 +24,10 @@ export default class CreateTransactions1588646030313
             type: 'varchar',
           },
           {
+            name: 'value',
+            type: 'decimal(10,2)',
+          },
+          {
             name: 'type',
             type: 'varchar',
           },
