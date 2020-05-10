@@ -20,7 +20,22 @@ class CreateTransactionService {
     category: categoryTitle,
   }: Request): Promise<Transaction> {
     if (type !== 'income' && type !== 'outcome') {
-      throw new AppError('Invalid type. Must be income or outcome', 404);
+      throw new AppError(
+        'Invalid transaction type. Must be income or outcome',
+        404,
+      );
+    }
+
+    const transactionsRepository = getCustomRepository(TransactionsRepository);
+
+    if (type === 'outcome') {
+      const {
+        total: currentBalance,
+      } = await transactionsRepository.getBalance();
+
+      if (currentBalance - value < 0) {
+        throw new AppError('Insuficient funds', 400);
+      }
     }
 
     const categoriesRepository = getRepository(Category);
@@ -41,8 +56,6 @@ class CreateTransactionService {
 
       category = await categoriesRepository.save(category);
     }
-
-    const transactionsRepository = getCustomRepository(TransactionsRepository);
 
     const transaction = transactionsRepository.create({
       title,
