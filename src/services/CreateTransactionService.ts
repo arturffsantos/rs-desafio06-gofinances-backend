@@ -9,7 +9,7 @@ interface Request {
   title: string;
   value: number;
   type: 'income' | 'outcome';
-  category: 'string';
+  category: string;
 }
 
 class CreateTransactionService {
